@@ -7,9 +7,9 @@ using System.IO;
 
 namespace IISETWMonitors
 {
-    class IISLoggingETWMonitor
+    class IISRequestLoggingETWMonitor
     {
-        public static readonly string SessionName = "IISLoggingETWMontitorSession";
+        public static readonly string SessionName = "IISRequestLoggingETWMonitorSession";
         public static readonly Guid ProviderGuid = new Guid("7E8AD27F-B271-4EA2-A783-A47BDE29143B");
         public const string ProviderName = "Microsoft-Windows-IIS-Logging";
         public static ulong Flags = 0x8000000000000000;
@@ -18,8 +18,7 @@ namespace IISETWMonitors
 
         public static int Run()
         {
-            Out.WriteLine("************************** IISLoggingETWMonitor **************************");
-            Out.WriteLine("This program generates processes and displays IIS request logging ETW events");
+            Out.WriteLine("************************** IISRequestLoggingETWMonitor **************************");
             Out.WriteLine();
 
             // You have to be Admin to turn on ETW events (anyone can write ETW events).
@@ -31,8 +30,6 @@ namespace IISETWMonitors
             }
 
             Out.WriteLine("Creating a '{0}' session", SessionName);
-            // Out.WriteLine("Use 'logman query -ets' to see active sessions.");
-            // Out.WriteLine("Use 'logman stop {0} -ets' to manually stop orphans.", SessionName);
 
             // Create a TraceEventSession
             using (var session = new TraceEventSession(SessionName))

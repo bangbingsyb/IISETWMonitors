@@ -54,8 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IISLoggingETWMonitor.cs" />
-    <Compile Include="IISRequestETWMonitor.cs" />
+    <Compile Include="IISRequestLoggingETWMonitor.cs" />
+    <Compile Include="IISRequestTracingETWMonitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

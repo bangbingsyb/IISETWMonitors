@@ -12,17 +12,17 @@ namespace IISETWMonitors
         {
             if (args.Length == 0)
             {
-                IISLoggingETWMonitor.Run();
+                IISRequestLoggingETWMonitor.Run();
             }
             else
             {
                 switch (args[0])
                 {
-                    case "-r":
-                        IISRequestETWMonitor.Run();
+                    case "-t":
+                        IISRequestTracingETWMonitor.Run();
                         break;
                     case "-l":
-                        IISLoggingETWMonitor.Run();
+                        IISRequestLoggingETWMonitor.Run();
                         break;
                 }
             }

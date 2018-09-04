@@ -7,9 +7,9 @@ using System.IO;
 
 namespace IISETWMonitors
 {
-    class IISRequestETWMonitor
+    class IISRequestTracingETWMonitor
     {
-        public static readonly string SessionName = "IISRequestETWMontitorSession";
+        public static readonly string SessionName = "IISRequestTracingETWMonitorSession";
         public static readonly Guid ProviderGuid = new Guid("3A2A4E84-4C21-4981-AE10-3FDA0D9B0F83");
         public const string ProviderName = "IIS: WWW Server";
         public static ulong Flags = 0xFFFFFFFE;
@@ -18,9 +18,7 @@ namespace IISETWMonitors
 
         public static int Run()
         {
-            Out.WriteLine("************************** IISRequestETWMonitor **************************");
-            Out.WriteLine("This program generates processes and displays IIS request-based ETW events");
-            Out.WriteLine("using the ETW REAL TIME pipeline. (thus no files are created)");
+            Out.WriteLine("************************** IISRequestTracingETWMonitor **************************");
             Out.WriteLine();
 
             // You have to be Admin to turn on ETW events (anyone can write ETW events).
@@ -32,8 +30,6 @@ namespace IISETWMonitors
             }
 
             Out.WriteLine("Creating a '{0}' session", SessionName);
-            // Out.WriteLine("Use 'logman query -ets' to see active sessions.");
-            // Out.WriteLine("Use 'logman stop {0} -ets' to manually stop orphans.", SessionName);
 
             // Create a TraceEventSession
             using (var session = new TraceEventSession(SessionName))
@@ -65,11 +61,13 @@ namespace IISETWMonitors
 
         private static int ParseEvent(in TraceEvent data)
         {
-            Out.WriteLine("IIS request tracing event: {0}", data.OpcodeName);
+            Out.WriteLine("EventName: {0}", data.EventName);
+            Out.WriteLine("Provider: {0}", data.ProviderName);
+            Out.WriteLine("Opcode: {0}", data.OpcodeName);
 
             for (int i = 0; i < data.PayloadNames.Length; i++)
             {
-                Out.WriteLine("Name: {0} | Value: {1}", data.PayloadNames[i], data.PayloadString(i));
+                Out.WriteLine("{0}: {1}", data.PayloadNames[i], data.PayloadString(i));
             }
 
             return 0;
