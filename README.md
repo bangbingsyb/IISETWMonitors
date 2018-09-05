@@ -19,7 +19,7 @@ IISETWMonitors [options]
 |-c|Monitor IIS configuration ETW events.|
 
 ## Examples
-* To monitor IIS request logging ETW events, run
+To monitor IIS request logging ETW events, run
 ```
 IISETWMonitors.exe -l
 ```
