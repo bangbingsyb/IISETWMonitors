@@ -10,21 +10,25 @@ namespace IISETWMonitors
     {
         static void Main(string[] args)
         {
-            if (args.Length == 0)
+            string cmdOption = (args.Length == 0) ? "-l" : args[0];
+
+            switch (cmdOption)
             {
-                IISRequestLoggingETWMonitor.Run();
-            }
-            else
-            {
-                switch (args[0])
-                {
-                    case "-t":
-                        IISRequestTracingETWMonitor.Run();
-                        break;
-                    case "-l":
-                        IISRequestLoggingETWMonitor.Run();
-                        break;
-                }
+                case "-l":
+                    IISRequestLoggingETWMonitor reqLogMonitor = new IISRequestLoggingETWMonitor();
+                    reqLogMonitor.Run();
+                    break;
+                case "-t":
+                    IISRequestTracingETWMonitor reqTraceMonitor = new IISRequestTracingETWMonitor();
+                    reqTraceMonitor.Run();
+                    break;
+                case "-c":
+                    IISConfigurationETWMonitor configMonitor = new IISConfigurationETWMonitor();
+                    configMonitor.Run();
+                    break;
+                default:
+                    Console.WriteLine("Invalid switch!");
+                    break;
             }
         }
     }

@@ -7,16 +7,16 @@ using System.IO;
 
 namespace IISETWMonitors
 {
-    class IISRequestTracingETWMonitor : BaseETWMonitor
+    class IISConfigurationETWMonitor : BaseETWMonitor
     {
         private ETWMonitorOptions _options = new ETWMonitorOptions();
 
         public void InitOptions()
         {
-            _options.SessionName = "IISRequestTracingETWMonitorSession";
-            _options.ProviderGuid = new Guid("3A2A4E84-4C21-4981-AE10-3FDA0D9B0F83");
-            _options.ProviderName = "IIS: WWW Server";
-            _options.Flags = 0xFFFFFFFE;
+            _options.SessionName = "IISConfigurationETWMonitorSession";
+            _options.ProviderGuid = new Guid("DC0B8E51-4863-407A-BC3C-1B479B2978AC");
+            _options.ProviderName = "Microsoft-Windows-IIS-Configuration";
+            _options.Flags = 0xe000000000000003;
             _options.Level = TraceEventLevel.Verbose;
             _options.Writer = Console.Out;
         }

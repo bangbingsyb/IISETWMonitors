@@ -7,59 +7,34 @@ using System.IO;
 
 namespace IISETWMonitors
 {
-    class IISRequestLoggingETWMonitor
+    class IISRequestLoggingETWMonitor : BaseETWMonitor
     {
-        public static readonly string SessionName = "IISRequestLoggingETWMonitorSession";
-        public static readonly Guid ProviderGuid = new Guid("7E8AD27F-B271-4EA2-A783-A47BDE29143B");
-        public const string ProviderName = "Microsoft-Windows-IIS-Logging";
-        public static ulong Flags = 0x8000000000000000;
-        public static TraceEventLevel Level = TraceEventLevel.Informational;
-        public static TextWriter Out = Console.Out;
+        private ETWMonitorOptions _options = new ETWMonitorOptions();
 
-        public static int Run()
+        public void InitOptions()
         {
-            Out.WriteLine("************************** IISRequestLoggingETWMonitor **************************");
-            Out.WriteLine();
+            _options.SessionName = "IISRequestLoggingETWMonitorSession";
+            _options.ProviderGuid = new Guid("7E8AD27F-B271-4EA2-A783-A47BDE29143B");
+            _options.ProviderName = "Microsoft-Windows-IIS-Logging";
+            _options.Flags = 0x8000000000000000;
+            _options.Level = TraceEventLevel.Informational;
+            _options.Writer = Console.Out;
+        }
 
-            // You have to be Admin to turn on ETW events (anyone can write ETW events).
-            if (!(TraceEventSession.IsElevated() ?? false))
+        public new int Run()
+        {
+            if (IsConfigured == false)
             {
-                Out.WriteLine("To turn on ETW events you need to be Administrator, please run from an Admin process.");
-                Debugger.Break();
-                return -1;
+                InitOptions();
+                Configure(_options, ParseEvent);
             }
 
-            Out.WriteLine("Creating a '{0}' session", SessionName);
+            base.Run();
 
-            // Create a TraceEventSession
-            using (var session = new TraceEventSession(SessionName))
-            {
-                // Control C handler
-                Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e) { session.Dispose(); };
-
-                // Hook up events. Hook up a callback for every event that 'Dynamic' knows about.
-                session.Source.Dynamic.All += delegate (TraceEvent data)
-                {
-                    ParseEvent(in data);
-                };
-
-                // Enable my provider, you can call many of these on the same session to get events from other providers.  
-                // Because this EventSource did not define any keywords, I can only turn on all events or none.  
-                var restarted = session.EnableProvider(ProviderGuid, Level, Flags);
-                if (restarted)
-                {
-                    Out.WriteLine("The session {0} was already active, it has been restarted.", SessionName);
-                }
-
-                Out.WriteLine("**** Start listening for events from the provider: {0}.", ProviderName);
-                session.Source.Process();
-                Out.WriteLine();
-                Out.WriteLine("**** Stopping the collection of events.");
-            }
             return 0;
         }
 
-        private static int ParseEvent(in TraceEvent data)
+        public new int ParseEvent(in TraceEvent data)
         {
             string requestLogString = string.Empty;
 
@@ -68,7 +43,7 @@ namespace IISETWMonitors
             {
                 requestLogString += (data.PayloadNames[i] + " " + data.PayloadString(i) + " ");
             }
-            Out.WriteLine(requestLogString);
+            Writer.WriteLine(requestLogString);
 
             return 0;
         }

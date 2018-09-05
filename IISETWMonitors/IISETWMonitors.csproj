@@ -54,6 +54,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseETWMonitor.cs" />
+    <Compile Include="ETWMonitorOptions.cs" />
+    <Compile Include="IETWMonitor.cs" />
+    <Compile Include="IISConfigurationETWMonitor.cs" />
     <Compile Include="IISRequestLoggingETWMonitor.cs" />
     <Compile Include="IISRequestTracingETWMonitor.cs" />
     <Compile Include="Program.cs" />

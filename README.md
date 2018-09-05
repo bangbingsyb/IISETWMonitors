@@ -3,22 +3,27 @@
 IIS ETW monitors is a console app to perform real-time monitoring of:
 * IIS request logging ETW events - the same information captured by IIS request log.
 * IIS request tracing ETW events - the same information captured by IIS failed request tracing.
+* IIS configuration ETW events
 
-### Using IIS ETW Monitors
-
-**IISETWMonitors.exe must be run as administrator.**
-
-Monitoring IIS request logging ETW events
-
+## Syntax
 ```
-IISETWMonitors.exe
+IISETWMonitors [options]
 ```
-Or
+**Note: IISETWMonitors.exe must be run as administrator.**
+
+## Parameters
+|Parameter|Description|  
+|-------|--------|  
+|-l|Monitor IIS request logging ETW events.|
+|-t|Monitor IIS request tracing ETW events.|
+|-c|Monitor IIS configuration ETW events.|
+
+## Examples
+* To monitor IIS request logging ETW events, run
 ```
 IISETWMonitors.exe -l
 ```
-
-Monitoring IIS request tracing ETW events
+or simply run
 ```
-IISETWMonitors.exe -t
+IISETWMonitors.exe
 ```
