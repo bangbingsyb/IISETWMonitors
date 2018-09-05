@@ -90,6 +90,7 @@ namespace IISETWMonitors
             Writer.WriteLine("EventName: {0}", data.EventName);
             Writer.WriteLine("Provider: {0}", data.ProviderName);
             Writer.WriteLine("Opcode: {0}", data.OpcodeName);
+            Writer.WriteLine("TimeStamp: {0}", data.TimeStamp);
 
             for (int i = 0; i < data.PayloadNames.Length; i++)
             {
